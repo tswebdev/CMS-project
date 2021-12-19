@@ -18,28 +18,10 @@
                         </h1>
 
                         <div class="col-xs-6">
-
-                        <?php //Insert categories into db from admin
-                        
-                        if(isset($_POST['submit'])){
-                            $cat_title = $_POST['cat_title'];
-
-                            if($cat_title == "" || empty($cat_title)){
-                                echo "<p style = 'color:red;'>Must fill this field!</p>";
-                            } else {
-                                $query = "INSERT INTO categories(cat_title)";
-                                $query .= "VALUE('{$cat_title}')";
-
-                                $create_category_query = mysqli_query($connection, $query);
-
-                                if(!$create_category_query) {
-                                    die('QUERY FAILED' . mysqli_error($connection));
-                                }
-                            }
-                        }
-                        
-                        ?>
-
+                        <!-- Add categories into db from admin -->
+                        <?php insert_categories(); ?>
+              
+                            <!-- Form to Add categories -->
                             <form action="" method="post">
                             <label for="Cat-title">Category Name</label>
                                 <div class="form-group">
@@ -49,40 +31,33 @@
                                     <input class="btn btn-primary" type="submit" name="submit" value="Add Category">
                                 </div>
                             </form>
+                            <!-- Form to Edit categories -->
+                            
+                            <?php //UPDATE AND INCLUDE
+                                if(isset($_GET['edit'])){
+                                    include "includes/update_categories.php";
+                                }
+                            ?>
+
                             </div>
 
                             <div class="col-xs-6">
-
-                                <?php //Displaying the categories in a table
-
-                                $query = "SELECT * FROM categories";
-                                $select_categories = mysqli_query($connection,$query);
-
-                                ?>
                                 <table class="table table-bordered table-hover">
                                     <thead>
-                                        <tr>
+                                        <tr> 
                                             <th>ID</th>
                                             <th>Category Title</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php 
-                                            while($row = mysqli_fetch_assoc($select_categories)){
-                                            $cat_id = $row['cat_id'];
-                                            $cat_title = $row['cat_title'];
-                                            
-                                            echo "<tr>";
-                                            echo "<td>{$cat_id}</td>";
-                                            echo "<td>{$cat_title}</td>";
-                                            echo "</tr>";
-                                            }
-                                        ?> 
+                                    <!-- FIND ALL CATEGORIES QUERY -->
+                                        <?php findAllCategories(); ?>
+                                    <!-- DELETE QUERY -->
+                                        <?php deleteCategories() ?> 
+                                
                                     </tbody>
                                 </table>
                             </div>
-                        
-                        
                     </div>
                 </div>
                 <!-- /.row -->
